@@ -1,2 +1,8 @@
-# hubget
-Continuation for easy-clone; easy tab-complete repo cloner
+# Easy tab-complete repo cloner
+
+This simple script makes it easier when cloning repos, like tab-completion.
+
+### Install
+
+TODO...
+

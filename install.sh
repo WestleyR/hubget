@@ -12,3 +12,14 @@
 #
 # This software is licensed under a Clear BSD License.
 #
+
+PREFIX=${HOME}/.local
+
+mkdir -p ${PREFIX}/bin
+mkdir -p ${PREFIX}/etc/hubget
+mkdir -p ${PREFIX}/bash_completion.d
+
+cp -f ./hubget ${PREFIX}/bin/
+cp -f ./hubget-urls ${PREFIX}/etc/hubget/
+cp -f ./hubget-complete.sh ${PREFIX}/bash_completion.d/
+
