@@ -1,0 +1,98 @@
+#!/bin/bash
+# Email: westleyr@nym.hush.com
+# Url: https://github.com/WestleyR/hubget
+# Last modified date: 2020-09-17
+#
+# This file is licensed under the terms of
+#
+# The Clear BSD License
+#
+# Copyright (c) 2018-2020 WestleyR
+# All rights reserved.
+#
+# This software is licensed under a Clear BSD License.
+#
+
+set -e
+
+VERSION_HUBGET="v2.0.0.b2, Sep 17, 2020"
+
+help_menu() {
+  echo "DESCRIPTION:"
+  echo "  simple, fast repo cloner, with <TAB> autocomplete."
+  echo "  automatlicy add repos to <TAB> complete by typing it manualy,"
+  echo "  then next time you start typing that repo, <TAB> will work."
+  echo ""
+  echo "USAGE:"
+  echo "  ./hubget [OPTION] [USERNAME/REPO_NAME]"
+  echo ""
+  echo "OPTIONS:"
+  echo "  -h, --help     print help menu."
+  echo "  -s, --ssh      clone the repo with ssh (TODO)"
+  echo "  -V, --version  print script version."
+  echo ""
+  echo "This software is licensed under a Clear BSD License."
+  echo "source code: https://github.con/WestleyR/hubget"
+
+  exit 0
+}
+
+print_version() {
+  echo "${VERSION_HUBGET}"
+  exit 0
+}
+
+clone_repo() {
+  REPO="$1"
+
+  if [ "$REPO" = "" ]; then
+    echo "E: Not enough arguments!"
+    exit 100
+  fi
+  
+  URL="$(echo "https://github.com/"$REPO)"
+  
+#  NAME=`echo "$URL" | rev | cut -f1 -d"/" | rev`
+  
+  git clone $URL
+  
+  if ! grep -q "$REPO" ${HUBGET_PREFIX}/easy-clone/github-urls/hubget-options; then
+    echo "I: adding ${REPO} to new options..."
+    echo $REPO >> ${HUBGET_PREFIX}/easy-clone/github-urls/hubget-options
+  fi
+  
+  echo "Done."
+}
+
+if [ -z "$1" ]; then
+  help_menu
+fi
+
+while [[ $# -gt 0 ]]; do
+  option="$1"
+  case $option in
+    -h|--help)
+      help_menu
+      exit 0
+      ;;
+    -s|--ssh)
+      echo "This flag is TODO..."
+      exit 1
+      shift
+      ;;
+    -V|--version)
+      print_version
+      exit 0
+      ;;
+    -*)
+      echo "Error: option not found: ${option}"
+      exit 22
+      ;;
+    *)
+      # Assum it is the url
+      clone_repo "$option"
+      ;;
+  esac
+done
+
+# vim: tabstop=2 shiftwidth=2 expandtab
